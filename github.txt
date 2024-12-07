@@ -1,0 +1,382 @@
+HTML
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Realm Conquest: Character Combat</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Realm Conquest: Character Combat</h1>
+
+    <!-- Character Selection -->
+    <div class="character-selection">
+        <button id="chooseWarrior" class="character-btn">Choose Warrior</button>
+        <button id="chooseArcher" class="character-btn">Choose Archer</button>
+        <button id="chooseMage" class="character-btn">Choose Mage</button>
+    </div>
+
+    <!-- Realm Status -->
+    <div id="realmStatus">
+        <h2>Realm Status</h2>
+        <p>Territory Size: <span id="playerTerritorySize">10</span></p>
+        <p>Resources: <span id="playerResources">100</span></p>
+    </div>
+
+    <!-- Battle Button -->
+    <button id="startBattleBtn" class="actionButton">Start Battle</button>
+
+    <!-- Battle Interface -->
+    <div id="battleInterface" class="hidden">
+        <div class="character-stats" id="playerCharacterStats"></div>
+        <div class="character-stats" id="enemyCharacterStats"></div>
+
+        <div id="battleControls">
+            <button id="attackBtn" class="actionButton">Attack Enemy</button>
+        </div>
+
+        <div id="battleLog"></div>
+    </div>
+
+    <!-- Game Container -->
+    <div id="gameContainer">
+        <div id="playerTerritory">
+            <div id="playerCharacter" class="character"></div>
+        </div>
+        <div id="enemyTerritory">
+            <div id="enemyCharacter" class="character"></div>
+        </div>
+    </div>
+
+    <!-- Music and Sound Effects -->
+    <audio id="backgroundMusic" loop autoplay>
+        <source src=""C:\Users\mouli\Downloads\war-of-war-253002.mp3"" type="audio/mp3">
+        Your browser does not support the audio element.
+    </audio>
+
+    <audio id="attackSound">
+        <source src="" type="audio/mp3">
+        Your browser does not support the audio element.
+    </audio>
+
+    <audio id="specialMoveSound">
+        <source src=""C:\Users\mouli\Downloads\war-of-war-253002.mp3"" type="audio/mp3">
+        Your browser does not support the audio element.
+    </audio>
+
+    <script src="game.js"></script>
+</body>
+</html>
+
+
+
+
+
+
+CSS
+
+
+
+/* General Body Styling */
+body {
+    font-family: 'Trajan Pro', serif;
+    background-color: #2c3e50;
+    color: #ecf0f1;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    background-image: url('https://img.freepik.com/premium-photo/chittorgarh-fort-india-largest-fort-india-looks-like-city-lost-time-digital-art-style_743201-1284.jpg');
+    background-size: cover;
+    background-position: center;
+    min-height: 100vh;
+}
+
+/* Header Styling */
+h1 {
+    color: #e74c3c;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    margin-bottom: 20px;
+}
+
+/* Character Selection Styling */
+.character-selection {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+    background-color: rgba(0, 0, 0, 0.6);
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.character-btn {
+    margin: 0 10px;
+    padding: 10px 20px;
+    cursor: pointer;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.character-btn:hover {
+    background-color: #45a049;
+}
+
+/* Realm Status Box */
+#realmStatus {
+    background-color: rgba(0, 0, 0, 0.6);
+    padding: 20px;
+    margin: 20px auto;
+    border-radius: 10px;
+    width: 50%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+/* Battle Interface */
+#battleInterface {
+    display: none;
+    padding: 20px;
+    margin-top: 20px;
+    border-radius: 10px;
+    color: white;
+}
+
+.character-stats {
+    display: inline-block;
+    width: 45%;
+    vertical-align: top;
+    background-color: rgba(0, 0, 0, 0.6);
+    padding: 10px;
+    margin: 10px;
+    border-radius: 8px;
+    color: white;
+}
+
+/* Battle Log */
+#battleLog {
+    background-color: rgba(255, 255, 255, 0.9);
+    height: 150px;
+    overflow-y: scroll;
+    padding: 10px;
+    margin-top: 20px;
+    border-radius: 10px;
+    color: black;
+}
+
+/* Action Buttons */
+.actionButton {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #FF5722;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.actionButton:hover {
+    background-color: #E64A19;
+}
+
+/* Game Container */
+#gameContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: rgba(44, 62, 80, 0.7);
+    border-radius: 15px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Territories */
+#playerTerritory, #enemyTerritory {
+    width: 45%;
+    height: 500px;
+    border: 3px solid #34495e;
+    background-color: rgba(52, 73, 94, 0.5);
+    position: relative;
+    border-radius: 10px;
+    padding: 15px;
+    overflow: hidden;
+}
+
+/* Character Styling */
+.character {
+    position: absolute;
+    bottom: 50px;
+    width: 300px;
+    height: 300px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    transition: all 0.3s ease;
+}
+
+#playerCharacter {
+    left: 10%;
+    background-image: url('https://toppng.com/uploads/preview/naruto-characters-full-body-11550219887hme64xswhn.png');
+}
+
+#enemyCharacter {
+    right: 10%;
+    background-image: url('https://i.pinimg.com/736x/9b/d9/a5/9bd9a5e162f3833db7ec832875368f92.jpg');
+}
+
+/* Hidden Class */
+.hidden {
+    display: none;
+}
+
+
+
+
+
+
+JAVA script
+
+
+
+
+// Game Data
+const gameState = {
+    player: {
+        character: null,
+        health: 100,
+        attackPower: 20,
+        territorySize: 10,
+        resources: 100
+    },
+    enemy: {
+        health: 100,
+        attackPower: 15
+    }
+};
+
+// DOM Elements
+const chooseWarriorBtn = document.getElementById('chooseWarrior');
+const chooseArcherBtn = document.getElementById('chooseArcher');
+const chooseMageBtn = document.getElementById('chooseMage');
+const startBattleBtn = document.getElementById('startBattleBtn');
+const battleInterface = document.getElementById('battleInterface');
+const battleLog = document.getElementById('battleLog');
+const playerCharacterStats = document.getElementById('playerCharacterStats');
+const enemyCharacterStats = document.getElementById('enemyCharacterStats');
+const attackBtn = document.getElementById('attackBtn');
+const playerTerritorySize = document.getElementById('playerTerritorySize');
+const playerResources = document.getElementById('playerResources');
+
+// Functions
+function updateStats() {
+    // Update the realm stats
+    playerTerritorySize.textContent = gameState.player.territorySize;
+    playerResources.textContent = gameState.player.resources;
+
+    // Update player and enemy stats in the battle interface
+    playerCharacterStats.innerHTML = `
+        <h3>Player</h3>
+        <p>Health: ${gameState.player.health}</p>
+        <p>Attack Power: ${gameState.player.attackPower}</p>
+    `;
+    enemyCharacterStats.innerHTML = `
+        <h3>Enemy</h3>
+        <p>Health: ${gameState.enemy.health}</p>
+        <p>Attack Power: ${gameState.enemy.attackPower}</p>
+    `;
+}
+
+function logBattleEvent(message) {
+    const logEntry = document.createElement('p');
+    logEntry.textContent = message;
+    battleLog.appendChild(logEntry);
+    battleLog.scrollTop = battleLog.scrollHeight;
+}
+
+function selectCharacter(type) {
+    switch (type) {
+        case 'Warrior':
+            gameState.player.character = 'Warrior';
+            gameState.player.attackPower = 25;
+            break;
+        case 'Archer':
+            gameState.player.character = 'Archer';
+            gameState.player.attackPower = 20;
+            break;
+        case 'Mage':
+            gameState.player.character = 'Mage';
+            gameState.player.attackPower = 30;
+            break;
+    }
+    alert(`You selected ${type}!`);
+    startBattleBtn.style.display = 'block';
+}
+
+function startBattle() {
+    battleInterface.style.display = 'block';
+    logBattleEvent('Battle has started!');
+    updateStats();
+}
+
+function attackEnemy() {
+    // Player attacks the enemy
+    gameState.enemy.health -= gameState.player.attackPower;
+    logBattleEvent(`Player attacked! Enemy lost ${gameState.player.attackPower} health.`);
+    
+    // Check if the enemy is defeated
+    if (gameState.enemy.health <= 0) {
+        logBattleEvent('You defeated the enemy!');
+        endBattle(true);
+        return;
+    }
+
+    // Enemy attacks the player
+    gameState.player.health -= gameState.enemy.attackPower;
+    logBattleEvent(`Enemy attacked! You lost ${gameState.enemy.attackPower} health.`);
+
+    // Check if the player is defeated
+    if (gameState.player.health <= 0) {
+        logBattleEvent('You were defeated...');
+        endBattle(false);
+        return;
+    }
+
+    updateStats();
+}
+
+function endBattle(playerWon) {
+    if (playerWon) {
+        gameState.player.territorySize += 5;
+        gameState.player.resources += 50;
+        alert('Victory! You expanded your territory and gained resources!');
+    } else {
+        alert('You lost the battle. Try again!');
+    }
+
+    // Reset enemy stats
+    gameState.enemy.health = 100;
+
+    // Reset player stats
+    gameState.player.health = 100;
+
+    // Hide battle interface
+    battleInterface.style.display = 'none';
+    startBattleBtn.style.display = 'none';
+
+    updateStats();
+}
+
+// Event Listeners
+chooseWarriorBtn.addEventListener('click', () => selectCharacter('Warrior'));
+chooseArcherBtn.addEventListener('click', () => selectCharacter('Archer'));
+chooseMageBtn.addEventListener('click', () => selectCharacter('Mage'));
+startBattleBtn.addEventListener('click', startBattle);
+attackBtn.addEventListener('click', attackEnemy);
+
+// Initialize Game
+updateStats();
